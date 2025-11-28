@@ -18,8 +18,7 @@ from reportlab.pdfgen import canvas
 # ----------------------------------------------------------
 #  FLASK INITIALIZATION
 # ----------------------------------------------------------
-
-app = Flask(_name_)
+app = Flask(__name__)
 CORS(app)
 
 
