@@ -330,4 +330,36 @@ def download_pdf():
 
     for s in schemes:
         if y < 80:
-            pdf.
+            pdf.showPage()
+            y = 750
+            pdf.setFont("Helvetica", 11)
+
+        pdf.drawString(50, y, f"• {s.get('scheme_name', '')}")
+        y -= 15
+
+        pdf.drawString(60, y, f"Summary: {s.get('summary','')[:250]}")
+        y -= 15
+
+        pdf.drawString(60, y, f"State: {s.get('state','')}")
+        y -= 15
+
+        pdf.drawString(60, y, f"Apply: {s.get('link','')}")
+        y -= 25
+
+    pdf.save()
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name="schemes.pdf",
+        mimetype="application/pdf"
+    )
+
+
+# ----------------------------------------------------------
+#  START FLASK SERVER
+# ----------------------------------------------------------
+
+if __name__ == "__main__":
+    app.run(debug=False, host="0.0.0.0", port=5000)
