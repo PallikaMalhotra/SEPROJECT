@@ -23,6 +23,22 @@ CORS(app)
 
 
 # ----------------------------------------------------------
+#  ROOT / HOME ENDPOINT  (NEW - FIXES 404 ON RENDER)
+# ----------------------------------------------------------
+@app.route("/")
+def home():
+    return jsonify({
+        "message": "Schemely API is running",
+        "status": "ok",
+        "endpoints": {
+            "/recommend": "POST - Get scheme recommendations",
+            "/download-pdf": "POST - Download PDF of selected schemes",
+            "/health": "GET - Service health check"
+        }
+    })
+
+
+# ----------------------------------------------------------
 #  LOAD DATASET FROM GOOGLE DRIVE
 # ----------------------------------------------------------
 
@@ -248,7 +264,7 @@ def recommend_schemes(df: pd.DataFrame, u: Profile, k: int = 5) -> pd.DataFrame:
 
 
 # ----------------------------------------------------------
-#  HEALTH CHECK
+#  HEALTH CHECK ENDPOINT
 # ----------------------------------------------------------
 
 @app.route("/health")
@@ -294,7 +310,7 @@ def recommend():
 
 
 # ----------------------------------------------------------
-#  PDF DOWNLOAD ENDPOINT  (NOW WORKS)
+#  PDF DOWNLOAD ENDPOINT
 # ----------------------------------------------------------
 
 @app.route("/download-pdf", methods=["POST"])
@@ -314,36 +330,4 @@ def download_pdf():
 
     for s in schemes:
         if y < 80:
-            pdf.showPage()
-            y = 750
-            pdf.setFont("Helvetica", 11)
-
-        pdf.drawString(50, y, f"• {s.get('scheme_name', '')}")
-        y -= 15
-
-        pdf.drawString(60, y, f"Summary: {s.get('summary','')[:250]}")
-        y -= 15
-
-        pdf.drawString(60, y, f"State: {s.get('state','')}")
-        y -= 15
-
-        pdf.drawString(60, y, f"Apply: {s.get('link','')}")
-        y -= 25
-
-    pdf.save()
-    buffer.seek(0)
-
-    return send_file(
-        buffer,
-        as_attachment=True,
-        download_name="schemes.pdf",
-        mimetype="application/pdf"
-    )
-
-
-# ----------------------------------------------------------
-#  START FLASK SERVER
-# ----------------------------------------------------------
-
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+            pdf.
