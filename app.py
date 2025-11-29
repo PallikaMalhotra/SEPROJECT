@@ -18,24 +18,9 @@ from reportlab.pdfgen import canvas
 # ----------------------------------------------------------
 #  FLASK INITIALIZATION
 # ----------------------------------------------------------
+
 app = Flask(__name__)
 CORS(app)
-
-
-# ----------------------------------------------------------
-#  ROOT / HOME ENDPOINT  (NEW - FIXES 404 ON RENDER)
-# ----------------------------------------------------------
-@app.route("/")
-def home():
-    return jsonify({
-        "message": "Schemely API is running",
-        "status": "ok",
-        "endpoints": {
-            "/recommend": "POST - Get scheme recommendations",
-            "/download-pdf": "POST - Download PDF of selected schemes",
-            "/health": "GET - Service health check"
-        }
-    })
 
 
 # ----------------------------------------------------------
@@ -264,7 +249,7 @@ def recommend_schemes(df: pd.DataFrame, u: Profile, k: int = 5) -> pd.DataFrame:
 
 
 # ----------------------------------------------------------
-#  HEALTH CHECK ENDPOINT
+#  HEALTH CHECK
 # ----------------------------------------------------------
 
 @app.route("/health")
@@ -310,7 +295,7 @@ def recommend():
 
 
 # ----------------------------------------------------------
-#  PDF DOWNLOAD ENDPOINT
+#  PDF DOWNLOAD ENDPOINT  (NOW WORKS)
 # ----------------------------------------------------------
 
 @app.route("/download-pdf", methods=["POST"])
@@ -362,4 +347,6 @@ def download_pdf():
 # ----------------------------------------------------------
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5000)
+    app.run(debug=True, port=5000)
+
+
